@@ -11,6 +11,9 @@ $(".show").on("click", function() {
 $("#pass").focus(function() {
     document.getElementById("pswd").classList.add("grey-border");
 });
+$("#pass").blur(function() {
+    document.getElementById("pswd").classList.remove("grey-border");
+});
 
 
 $(document).ready(function() {
@@ -29,7 +32,7 @@ $(document).ready(function() {
         password = this.value;
         if (username.length >0 && password.length>5) {
             document.querySelector(".log").classList.add("blue");
-            $(".enable").prop("disabled", false)
+            $(".enable").prop("disabled", false);
         }
         else {
             document.querySelector(".log").classList.remove("blue");
