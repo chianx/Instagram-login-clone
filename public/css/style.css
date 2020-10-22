@@ -81,7 +81,7 @@ div {
 .bar {
   width: 85%;
   height: 30px;
-  margin-bottom: 2.5%;
+  margin-bottom: 5px;
   border:rgb(202, 193, 193) solid 1.5px;
   border-radius: 4px;
 }
@@ -155,7 +155,7 @@ footer {
 #pass {
   display: inline-block;
   height: 28px;
-  width: 98%;
+  width: 98.7%;
   position: absolute;
   left: 0;
   z-index: 1;
@@ -175,15 +175,12 @@ footer {
   visibility: hidden;
 }
 
-/* #pswd {
-  border-color:rgb(170, 167, 167);
-  border-width: 1.6px;
-} */
 
 
 .pass {
   display: inline-block;
   position: relative;
+  right: 2px;
   width: 85.5%;
 }
 
